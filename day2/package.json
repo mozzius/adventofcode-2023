@@ -1,0 +1,8 @@
+{
+  "main": "main.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^20.10.2",
+    "typescript": "^5.3.2"
+  }
+}
