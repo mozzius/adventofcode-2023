@@ -81,7 +81,7 @@ parseLinesForSumOfGearRatios (x : y : z : xs) =
        in sum (map (getGearRatioFromPotentialGearIndex numbers) gears) + parseLinesForSumOfGearRatios (y : z : xs)
 
 getPotentialGearIndexes :: String -> [Int]
-getPotentialGearIndexes str = trace (str ++ "\n" ++ show (getPotentialGearIndexesWithIndex 0 str)) getPotentialGearIndexesWithIndex 0 str
+getPotentialGearIndexes = getPotentialGearIndexesWithIndex 0
 
 getPotentialGearIndexesWithIndex :: Int -> String -> [Int]
 getPotentialGearIndexesWithIndex _ [] = []
@@ -93,13 +93,10 @@ getPotentialGearIndexesWithIndex i (x : xs)
 getNumbersAdjacentToGear :: Int -> [Number] -> [Number]
 getNumbersAdjacentToGear _ [] = []
 getNumbersAdjacentToGear gear (Number {index, value} : xs) =
-  if gear >= (index - 1) && gear <= (index + length (show value) + 1) then Number {index, value} : getNumbersAdjacentToGear gear xs else getNumbersAdjacentToGear gear xs
+  if gear >= (index - 1) && gear < (index + length (show value) + 1) then Number {index, value} : getNumbersAdjacentToGear gear xs else getNumbersAdjacentToGear gear xs
 
 getGearRatioFromPotentialGearIndex :: [Number] -> Int -> Int
 getGearRatioFromPotentialGearIndex numbers gear =
-  trace
-    (show gear ++ "\n" ++ show numbers)
-    ( case getNumbersAdjacentToGear gear numbers of
-        [Number {value = v1}, Number {value = v2}] -> trace "FOUND!" v1 * v2
-        _ -> trace "WRONG NUMBER" 0
-    )
+  case getNumbersAdjacentToGear gear numbers of
+    [Number {value = v1}, Number {value = v2}] -> v1 * v2
+    _ ->  0
